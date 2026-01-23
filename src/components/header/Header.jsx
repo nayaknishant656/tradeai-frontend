@@ -8,6 +8,8 @@ export default function Header() {
         { name: 'Markets', path: '/' },
         { name: 'Dashboard', path: '/dashboard' },
         { name: 'Services', path: '/services' },
+        { name: 'Admin', path: '/admin' },
+        { name: 'Add Product', path: '/admin/create' },
     ];
 
     return (

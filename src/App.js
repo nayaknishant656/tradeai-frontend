@@ -6,6 +6,8 @@ import Login from './components/auth/Login';
 
 import Dashboard from './components/body/Dashboard';
 import ProductDetail from './components/body/ProductDetail';
+import AdminDashboard from './components/update/AdminDashboard';
+import ProductForm from './components/update/ProductForm';
 
 const Services = () => <div className="p-8 text-white text-center"><h1>Services Page</h1></div>;
 const Account = () => <div className="p-8 text-white text-center"><h1>Account Page</h1></div>;
@@ -19,6 +21,9 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/create" element={<ProductForm mode="create" />} />
+          <Route path="/admin/edit/:id" element={<ProductForm mode="edit" />} />
           <Route path="/services" element={<Services />} />
           <Route path="/login" element={<Login />} />
           <Route path="/account" element={<Account />} />
