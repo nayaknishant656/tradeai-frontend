@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { authService } from '../services/auth/authmain';
 
 const AuthContext = createContext();
 
@@ -9,14 +10,23 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check local storage for token on mount
-        const token = localStorage.getItem('token');
-        if (token) {
-            // Ideally verify token with backend here
-            // For now, assume token means logged in
-            setUser({ token });
-        }
-        setLoading(false);
+        const verifyToken = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await authService.getMe(token);
+                    // assuming response.data contains the user object
+                    setUser({ ...response.data, token });
+                } catch (err) {
+                    console.error('Token verification failed:', err);
+                    localStorage.removeItem('token');
+                    setUser(null);
+                }
+            }
+            setLoading(false);
+        };
+
+        verifyToken();
     }, []);
 
     const login = (token) => {
