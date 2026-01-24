@@ -1,15 +1,27 @@
 const BASE_URL = 'http://localhost:8000/api/products';
 
+const getHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+    };
+};
+
 export const apiService = {
     // GET all
     getAll: async (params = '') => {
-        const response = await fetch(`${BASE_URL}${params}`);
+        const response = await fetch(`${BASE_URL}${params}`, {
+            headers: getHeaders()
+        });
         return await response.json();
     },
 
     // GET by ID
     getById: async (id) => {
-        const response = await fetch(`${BASE_URL}/${id}`);
+        const response = await fetch(`${BASE_URL}/${id}`, {
+            headers: getHeaders()
+        });
         return await response.json();
     },
 
@@ -17,7 +29,7 @@ export const apiService = {
     create: async (data) => {
         const response = await fetch(BASE_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(data)
         });
         return await response.json();
@@ -27,7 +39,7 @@ export const apiService = {
     update: async (id, data) => {
         const response = await fetch(`${BASE_URL}/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(data)
         });
         return await response.json();
@@ -36,7 +48,8 @@ export const apiService = {
     // DELETE
     delete: async (id) => {
         const response = await fetch(`${BASE_URL}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getHeaders()
         });
         return await response.json();
     }

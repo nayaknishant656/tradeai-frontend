@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const navLinks = [
         { name: 'Markets', path: '/' },
@@ -11,6 +13,11 @@ export default function Header() {
         { name: 'Admin', path: '/admin' },
         { name: 'Add Product', path: '/admin/create' },
     ];
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
         <header className="bg-[#0b0e11] text-[#eaecef] border-b border-[#2b3139] sticky top-0 z-50">
@@ -46,23 +53,24 @@ export default function Header() {
                     {/* Right Section: Auth */}
                     <div className="flex items-center space-x-6">
                         <div className="flex items-center space-x-3">
-                            {!isLoggedIn ? (
+                            {!user ? (
                                 <>
-                                    <button
-                                        onClick={() => setIsLoggedIn(true)}
+                                    <Link
+                                        to="/login"
                                         className="text-sm font-medium px-3 py-1.5 rounded hover:bg-[#2b3139] transition-all"
                                     >
                                         Log In
-                                    </button>
-                                    <button
+                                    </Link>
+                                    <Link
+                                        to="/signup"
                                         className="text-sm font-medium bg-[#f0b90b] text-black px-4 py-1.5 rounded font-bold hover:bg-[#fcd535] transition-all"
                                     >
                                         Register
-                                    </button>
+                                    </Link>
                                 </>
                             ) : (
                                 <button
-                                    onClick={() => setIsLoggedIn(false)}
+                                    onClick={handleLogout}
                                     className="text-sm font-medium border border-gray-600 px-4 py-1.5 rounded hover:bg-[#2b3139] transition-all"
                                 >
                                     Log Out
